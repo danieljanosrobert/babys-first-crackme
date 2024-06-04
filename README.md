@@ -141,24 +141,25 @@ Lépések
 ## Forráskód
 Kód írásakor, vagy ha a forráskód megvan, akkor értelmes kulcsoknak, értelmes függvényneveknek köszönhetően számomra olvasható ez a kód. Megvan a visszatérési érték, megvan a függvény neve, vannak változók, stb. Ezek mind olvashatóak most és ebből össze tudom rakni, hogy mit csinál ez a forráskód. Pl van egy buffer-em, ebbe a felhasználótól bekérek értéket, amit egy ismert jelszóval fogok összehasonlítani és ha ez sikerül, akkor kiíratom, hogy a jelszó helyes.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/60187795-9f32-4dad-9092-5b88271f5563)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/d12eff8b-bfae-46eb-807b-ca08ed59c61c)
+
 
 ## xxd, strings parancsok
 
 Forráskód hiányában, mikor csak a binárissal rendelkezünk, akkor már sokkal nehezebb feladatunk van, hiszen minden, ami itt van az felfoghatatlan hex számok tömkelege. És rengeteg számról van szó.
 Strings-el megnézhetjük, hogy milyen olyan karaktersorozatok szerepelnek a kódban, amelyeknek a hossza nagyobb, mint 5, de a mi esetünkben ez nem segít, mert a buffer valószínűleg nem egy megadott szöveggel hasonlítja össze az inputot.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/30520059-f6d9-42f6-9d00-6b6ce3adb139)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/79eebe5e-a1b3-4b2a-b8d2-d2b5271f4b32)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/aeca606e-1e90-4f2c-a13c-fa22560478b1)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/d1acefa5-8ca3-4334-b807-1d6b44565ca4)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/6a13bc79-2d3b-4204-a1da-6854915c93d4)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/73e9e00b-ce95-481a-80f0-9cdc79e74c8e)
 
 
 ## objdump -d -Mintel
 
 Szerencsére tanultuk, hogy léteznek disassemblerek. Linux használatakor van lehetőségünk object dumpot használni, ez generál nekünk egy valamivel jobban olvasható programkódot, de még így is eléggé nehéz a dolgunk, hiszen objdump-al még nem egyszerű dolgozni. Lemegyünk a text részhez, ami tartalmazza a binárisunk kódját (a processor ezeket a futtatható biteket fogja futtatni).
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/7f909bfe-d598-4da2-993e-a5ad6c225417)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/b3e2b570-71d9-4df2-8795-f786d101711c)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/5d5ca106-54db-474d-9416-29163341f4dc)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/3edf2fc3-367d-450c-8312-f7c95f559bd9)
 
 
 ## IDA Free
