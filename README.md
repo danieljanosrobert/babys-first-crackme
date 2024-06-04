@@ -2,6 +2,33 @@
 
 @danielj
 
+# Tartalomjegyzék
+- [Cybersecurity - Reverse engineering](#cybersecurity---reverse-engineering)
+- [Tartalomjegyzék](#tartalomjegyzék)
+- [Cybersecurity](#cybersecurity)
+  - [Mi az a kiberbiztonság?](#mi-az-a-kiberbiztonság)
+  - [A Kiberbiztonság Fontossága](#a-kiberbiztonság-fontossága)
+  - [A Kiberbiztonsági Fenyegetések Típusai](#a-kiberbiztonsági-fenyegetések-típusai)
+- [Védelmi Mechanizmusok](#védelmi-mechanizmusok)
+  - [Védelmi Mechanizmusok](#védelmi-mechanizmusok-1)
+  - [A Kiberbiztonsági Szakemberek Szerepe](#a-kiberbiztonsági-szakemberek-szerepe)
+  - [White Hat Hackerek](#white-hat-hackerek)
+- [CTF](#ctf)
+  - [Kiberbiztonság és CTF Feladatok](#kiberbiztonság-és-ctf-feladatok)
+  - [CTF Feladatok Típusai](#ctf-feladatok-típusai)
+  - [Reverse Engineering](#reverse-engineering)
+  - [Reverse Engineering - Tippek](#reverse-engineering---tippek)
+- [Gyakorlati példa](#gyakorlati-példa)
+  - [Forráskód](#forráskód)
+  - [xxd, strings parancsok](#xxd-strings-parancsok)
+  - [objdump -d -Mintel](#objdump--d--mintel)
+  - [IDA Free](#ida-free)
+  - [IDA Free - start](#ida-free---start)
+  - [IDA Free - main](#ida-free---main)
+  - [Ida Free - sub\_11A9](#ida-free---sub_11a9)
+  - [Ellenőrzés](#ellenőrzés)
+- [Források](#források)
+
 # Cybersecurity
 
 ## Mi az a kiberbiztonság?
