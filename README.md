@@ -114,40 +114,40 @@ Lépések
 ## Forráskód
 Kód írásakor, vagy ha a forráskód megvan, akkor értelmes kulcsoknak, értelmes függvényneveknek köszönhetően számomra olvasható ez a kód. Megvan a visszatérési érték, megvan a függvény neve, vannak változók, stb. Ezek mind olvashatóak most és ebből össze tudom rakni, hogy mit csinál ez a forráskód. Pl van egy buffer-em, ebbe a felhasználótól bekérek értéket, amit egy ismert jelszóval fogok összehasonlítani és ha ez sikerül, akkor kiíratom, hogy a jelszó helyes.
 
-
-![alt text](image-1.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/60187795-9f32-4dad-9092-5b88271f5563)
 
 ## xxd, strings parancsok
 
 Forráskód hiányában, mikor csak a binárissal rendelkezünk, akkor már sokkal nehezebb feladatunk van, hiszen minden, ami itt van az felfoghatatlan hex számok tömkelege. És rengeteg számról van szó.
 Strings-el megnézhetjük, hogy milyen olyan karaktersorozatok szerepelnek a kódban, amelyeknek a hossza nagyobb, mint 5, de a mi esetünkben ez nem segít, mert a buffer valószínűleg nem egy megadott szöveggel hasonlítja össze az inputot.
 
-![alt text](image-4.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/30520059-f6d9-42f6-9d00-6b6ce3adb139)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/79eebe5e-a1b3-4b2a-b8d2-d2b5271f4b32)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/aeca606e-1e90-4f2c-a13c-fa22560478b1)
+
 
 ## objdump -d -Mintel
 
 Szerencsére tanultuk, hogy léteznek disassemblerek. Linux használatakor van lehetőségünk object dumpot használni, ez generál nekünk egy valamivel jobban olvasható programkódot, de még így is eléggé nehéz a dolgunk, hiszen objdump-al még nem egyszerű dolgozni. Lemegyünk a text részhez, ami tartalmazza a binárisunk kódját (a processor ezeket a futtatható biteket fogja futtatni).
 
-![alt text](image-5.png)
-![alt text](image-6.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/7f909bfe-d598-4da2-993e-a5ad6c225417)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/b3e2b570-71d9-4df2-8795-f786d101711c)
+
 
 ## IDA Free
 Szerencsére van jobb disassemblerrel lehetőségünk dolgozni. Importáljuk a bináris fájlunkat. Az ELF64 tökéletes lesz. 
 
-![alt text](image-7.png)
-![alt text](image-8.png)
-![alt text](image-9.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/50882b27-e5ec-43c5-b9a7-538e1121cffe)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/035b80e7-cb88-4e6f-877c-40e8737ebd7a)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/966b9766-ee29-48aa-b2f0-f4c86a867fb8)
 
 ## IDA Free - start
 Megnyitásra kerül az a start pontunk. Ez lesz az első instrukció, ami le fog futni. Átugorhatjuk ezeket. Látjuk, betöltésre kerül az effektív address-e a main-nek az rdi-b mielőtt a start main hívásra kerül. 
 Tudjuk, hogy az rdi az első paraméter egy függvényhíváskor és az rsi a második.
 Duplaklikk a main-re
 
-
-![alt text](image-11.png)
-![alt text](image-10.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/c99bd3a3-59a9-49cb-82d1-b2802ee238d0)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/6e45b262-f11f-402d-927c-8af9fdcaa17f)
 
 ## IDA Free - main
 
@@ -157,7 +157,7 @@ Tudjuk, hogy az első argumentum az rdi, a második az rsi.
 
 Látjuk, hogy az első argumentumba bekerül az rax. Rax-ra középsőklikk és látjuk az összes rax használatot kiemelve.
 
-![alt text](image-12.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/8f3809c5-afc8-43c9-964e-c9bf57655ed5)
 
 EAX azért kerül kijelölésre, mert az az alsó része az RAX-nek.
 Felül látjuk, hogy load effective address hívódik az adott helyre. Mi lehet ez a hely?
@@ -168,14 +168,14 @@ Mivel effective address-t hív, ezért pointer kerül az adott helyre. Ez lesz a
 
 Ahogy így haladunk egyre jobban rájövünk, hogy mit is csinál a program, szépen lassan a program, a malware, visszafejtjük a kódot szépen lassan.
 
-![alt text](image-13.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/24e05b15-11b0-49ef-baf5-dc74af722ea0)
 
 Hívjuk a scanf function-t, aztán hívjuk a subfunctiont. 
 Ezután megnézzük, hogy a return value 0-e.
 Jump zero, (ha false) (rdx-be kerül a visszatérési érték 64 biten), akkor return, ha nem 0, akkor meghívódik a piros út.
 Valószínűleg a subfunction a getPass function. Duplaklikk erre.
 
-![alt text](image-14.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/c73a6bc7-daf2-419d-bc7f-a24e8e100d51)
 
 ## Ida Free - sub_11A9
 
@@ -184,21 +184,21 @@ Vesszük a buffer-t, berakjuk rax-be, majd összehasonlítjuk az első byte poin
 A1 az első byte az RAX/EAX-ből, ezt összehasonlítjuk a 63h értékkel (IDA megmondja, hogy ez a c).
 Ha nem zero, akkor folytatjuk, ha zero, akkor return.
 
-![alt text](image-15.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/2a844c18-ebbc-40b3-b73d-b073e9aced74)
 
 Ha ezt követjük, akkor láthatjuk, hogy mi is lesz a jelszó.
 
-![alt text](image-16.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/f6f57f7c-d0fc-4cb8-9249-617bc46dde9d)
 
-![alt text](image-17.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/11804892-ffbd-408b-a6f2-0fe5448d5ba3)
 
-![alt text](image-18.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/59a68950-0aaf-4ffe-bce9-017acd208f44)
 
-![alt text](image-19.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/a4ff648a-a1e0-4edb-9300-148ee70beb94)
 
 ## Ellenőrzés
 
-![alt text](image-20.png)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/ea136940-9a2c-4511-9d75-ee5321375d57)
 
 Egyébként objdump-al is meg tudtuk volna nézni, de ez sokkal biztosabb, főleg egy nehezebb feladatnál.
 
