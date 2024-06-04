@@ -150,7 +150,9 @@ Forráskód hiányában, mikor csak a binárissal rendelkezünk, akkor már sokk
 Strings-el megnézhetjük, hogy milyen olyan karaktersorozatok szerepelnek a kódban, amelyeknek a hossza nagyobb, mint 5, de a mi esetünkben ez nem segít, mert a buffer valószínűleg nem egy megadott szöveggel hasonlítja össze az inputot.
 
 ![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/d1acefa5-8ca3-4334-b807-1d6b44565ca4)
+
 ![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/6a13bc79-2d3b-4204-a1da-6854915c93d4)
+
 ![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/73e9e00b-ce95-481a-80f0-9cdc79e74c8e)
 
 
@@ -159,23 +161,26 @@ Strings-el megnézhetjük, hogy milyen olyan karaktersorozatok szerepelnek a kó
 Szerencsére tanultuk, hogy léteznek disassemblerek. Linux használatakor van lehetőségünk object dumpot használni, ez generál nekünk egy valamivel jobban olvasható programkódot, de még így is eléggé nehéz a dolgunk, hiszen objdump-al még nem egyszerű dolgozni. Lemegyünk a text részhez, ami tartalmazza a binárisunk kódját (a processor ezeket a futtatható biteket fogja futtatni).
 
 ![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/5d5ca106-54db-474d-9416-29163341f4dc)
+
 ![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/3edf2fc3-367d-450c-8312-f7c95f559bd9)
 
 
 ## IDA Free
 Szerencsére van jobb disassemblerrel lehetőségünk dolgozni. Importáljuk a bináris fájlunkat. Az ELF64 tökéletes lesz. 
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/50882b27-e5ec-43c5-b9a7-538e1121cffe)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/035b80e7-cb88-4e6f-877c-40e8737ebd7a)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/966b9766-ee29-48aa-b2f0-f4c86a867fb8)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/1325015a-37d8-4643-9ed2-1a9e592f6d6b)
+
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/2ee1c91c-e7aa-4abb-b0c9-ab8baf229a5c)
+
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/37ea05e3-8916-443d-8812-97d9146384a4)
 
 ## IDA Free - start
 Megnyitásra kerül az a start pontunk. Ez lesz az első instrukció, ami le fog futni. Átugorhatjuk ezeket. Látjuk, betöltésre kerül az effektív address-e a main-nek az rdi-b mielőtt a start main hívásra kerül. 
 Tudjuk, hogy az rdi az első paraméter egy függvényhíváskor és az rsi a második.
 Duplaklikk a main-re
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/c99bd3a3-59a9-49cb-82d1-b2802ee238d0)
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/6e45b262-f11f-402d-927c-8af9fdcaa17f)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/68a20c95-849a-4cb5-81fe-25c0a8d0c435)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/281e906b-0a48-4c5b-be54-cc495322c060)
 
 ## IDA Free - main
 
@@ -185,7 +190,7 @@ Tudjuk, hogy az első argumentum az rdi, a második az rsi.
 
 Látjuk, hogy az első argumentumba bekerül az rax. Rax-ra középsőklikk és látjuk az összes rax használatot kiemelve.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/8f3809c5-afc8-43c9-964e-c9bf57655ed5)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/9087b47a-3d37-4f6a-a777-ca9a6d4ba073)
 
 EAX azért kerül kijelölésre, mert az az alsó része az RAX-nek.
 Felül látjuk, hogy load effective address hívódik az adott helyre. Mi lehet ez a hely?
@@ -196,14 +201,15 @@ Mivel effective address-t hív, ezért pointer kerül az adott helyre. Ez lesz a
 
 Ahogy így haladunk egyre jobban rájövünk, hogy mit is csinál a program, szépen lassan a program, a malware, visszafejtjük a kódot szépen lassan.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/24e05b15-11b0-49ef-baf5-dc74af722ea0)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/f5e75657-3a10-4fb2-bc11-0d900a3ebb1e)
 
 Hívjuk a scanf function-t, aztán hívjuk a subfunctiont. 
 Ezután megnézzük, hogy a return value 0-e.
 Jump zero, (ha false) (rdx-be kerül a visszatérési érték 64 biten), akkor return, ha nem 0, akkor meghívódik a piros út.
 Valószínűleg a subfunction a getPass function. Duplaklikk erre.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/c73a6bc7-daf2-419d-bc7f-a24e8e100d51)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/7429aaca-9926-4384-8a82-3608e981a4a7)
+
 
 ## Ida Free - sub_11A9
 
@@ -212,21 +218,21 @@ Vesszük a buffer-t, berakjuk rax-be, majd összehasonlítjuk az első byte poin
 A1 az első byte az RAX/EAX-ből, ezt összehasonlítjuk a 63h értékkel (IDA megmondja, hogy ez a c).
 Ha nem zero, akkor folytatjuk, ha zero, akkor return.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/2a844c18-ebbc-40b3-b73d-b073e9aced74)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/16a01fea-5cb9-4ab9-a0d3-52053e5b6982)
 
 Ha ezt követjük, akkor láthatjuk, hogy mi is lesz a jelszó.
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/f6f57f7c-d0fc-4cb8-9249-617bc46dde9d)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/8b2cfd55-20a0-41a8-a655-2f88dfe070ed)
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/11804892-ffbd-408b-a6f2-0fe5448d5ba3)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/d4c6d5fd-3552-431e-b992-b3250c3f8f3a)
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/59a68950-0aaf-4ffe-bce9-017acd208f44)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/0306b545-d73e-4dab-963b-07bfa02674da)
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/a4ff648a-a1e0-4edb-9300-148ee70beb94)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/42255158-0be4-4359-9828-15ee05e8e483)
 
 ## Ellenőrzés
 
-![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/ea136940-9a2c-4511-9d75-ee5321375d57)
+![image](https://github.com/danieljanosrobert/babys-first-crackme/assets/45608233/e5267ced-8ae3-4488-80b5-1ee490557420)
 
 Egyébként objdump-al is meg tudtuk volna nézni, de ez sokkal biztosabb, főleg egy nehezebb feladatnál.
 
